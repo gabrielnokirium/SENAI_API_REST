@@ -1,0 +1,79 @@
+package br.com.senai;
+
+import java.util.InputMismatchException;
+import java.util.Random;
+import java.util.Scanner;
+
+public class MegaUnaApplication_v1 {
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int tentativas = 5;
+
+
+        apresentarSaudacao();
+        String gamer = coletarNome(scan);
+        apresentarDesafio(gamer, tentativas);
+        executarJogo(gamer, tentativas, scan);
+        finalizarJogo();
+    }
+
+
+    public static void apresentarSaudacao() {
+        System.out.println("***** Bem vindo ao Mega Una da Turma S-164 *****");
+    }
+
+    public static String coletarNome(Scanner sc) {
+        System.out.println("Qual é o seu nome?");
+        String jogador = sc.next();
+        sc.nextLine();
+        return jogador;
+    }
+    public static void apresentarDesafio(String jogador, int tentativas) {
+        System.out.println("Olá, " + jogador + "! Nesse jogo, um número será sorteado. \n Você será capaz de descobrir?");
+        System.out.println("Você poderá tentar " + tentativas + " vezes. Boa sorte!");
+    }
+
+    public static void executarJogo(String jogador, int tentativas, Scanner sc) {
+        Random rd = new Random();
+        int valorSorteado = rd.nextInt( 1, 100);
+        String resposta = "sim";
+
+        do {
+            tentativas--;
+
+            try {
+                System.out.println("Escolha um número entre 1 e 100:");
+                int valorEscolhido = sc.nextInt();
+                if (valorEscolhido == valorSorteado) {
+                    System.out.println("Parabéns! " + jogador + "! Você ganhou!");
+                    break;
+                } else {
+                    System.out.println("Que pena " + jogador + "... Não foi dessa vez!");
+                    if (tentativas > 0) {
+                        System.out.println(" Você ainda tem " + tentativas + " tentativas.");
+                        System.out.println("Gostaria de tentar novamente?");
+                        resposta = sc.next();
+
+                        //Tentativa
+
+                        while (!resposta.equalsIgnoreCase("sim")
+                                && !resposta.equalsIgnoreCase("não")) {
+                            System.out.println("Voce precisa responder \"sim\" ou \"não\"!");
+                            resposta = sc.next();
+                        }
+                    } else {
+                        System.out.println("Você não tem mais tentativas!");
+                    }
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Você precisa informar um dado numérico!");
+
+            }
+        } while (resposta.equalsIgnoreCase("sim") && tentativas > 0);
+
+    }
+    public static void finalizarJogo() {
+
+        System.out.println("Fim de jogo");
+    }
+}
